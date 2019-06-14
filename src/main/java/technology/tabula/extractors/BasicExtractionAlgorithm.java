@@ -82,7 +82,6 @@ public class BasicExtractionAlgorithm implements ExtractionAlgorithm {
             if( elements.get(0).getText().trim().equals("") );
             try{
                 String[] fieldSplit = elements.get(0).getText().split(" ");
-                if( fieldSplit.length > 1 )
                 Integer.parseInt(fieldSplit[0]);
             }catch( Exception exception ){
                 continue;
