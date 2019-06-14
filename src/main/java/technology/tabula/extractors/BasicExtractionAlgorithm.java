@@ -66,7 +66,7 @@ public class BasicExtractionAlgorithm implements ExtractionAlgorithm {
         Table table = new Table(this);
         table.setRect(page.getLeft(), page.getTop(), page.getWidth(), page.getHeight());
 
-        for (int i = 0; i < lines.size(); i++) {
+        for (int i = 0, rownum = 0; i < lines.size(); i++) {
             Line line = lines.get(i);
             List<TextChunk> elements = line.getTextElements();
             
@@ -77,7 +77,17 @@ public class BasicExtractionAlgorithm implements ExtractionAlgorithm {
 					return new java.lang.Float(o1.getLeft()).compareTo(o2.getLeft());
 				}
 			});
-            
+
+            if( elements != null && elements.size() > 0 && elements.get(0) != null && elements.get(0).getLeft() > 100 )continue;
+            if( elements.get(0).getText().trim().equals("") );
+            try{
+                String[] fieldSplit = elements.get(0).getText().split(" ");
+                if( fieldSplit.length > 1 )
+                Integer.parseInt(fieldSplit[0]);
+            }catch( Exception exception ){
+                continue;
+            }
+
             for (TextChunk tc: elements) {
                 if (tc.isSameChar(Line.WHITE_SPACE_CHARS)) {
                     continue;
@@ -91,8 +101,9 @@ public class BasicExtractionAlgorithm implements ExtractionAlgorithm {
                         break;
                     } 
                 }
-                table.add(tc, i, found ? j : columns.size());
+                table.add(tc, rownum, found ? j : columns.size());
             }
+            rownum++;
         }
         
         return Arrays.asList(new Table[] { table } );
